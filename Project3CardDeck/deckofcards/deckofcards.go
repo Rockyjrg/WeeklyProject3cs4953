@@ -18,7 +18,10 @@ type CardDeck struct {
 
 // NewDeck initializes a new deck of cards in standard order
 func NewDeck() *CardDeck {
+	sizeDeck := 52
+	for i := 0; i < sizeDeck; i++ {
 
+	}
 	return &CardDeck{}
 }
 
