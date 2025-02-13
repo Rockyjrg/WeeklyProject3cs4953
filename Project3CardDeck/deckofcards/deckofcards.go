@@ -80,17 +80,29 @@ func (d *CardDeck) DrawRandom() Card {
 
 // CardToTop places a card on top of the deck
 func (d *CardDeck) CardToTop(card Card) {
+	//increase size with a dummy element
+	d.Cards = append(d.Cards, Card{})
 
+	//shift elements to the right by one
+	copy(d.Cards[1:], d.Cards[0:len(d.Cards)-1])
+
+	//place new card at index[0]
+	d.Cards[0] = card
 }
 
 // CardToBottom places a card on the bottom of the deck
 func (d *CardDeck) CardToBottom(card Card) {
 
+	d.Cards = append(d.Cards, card)
+
 }
 
 // CardToRandom places a card at a random position in the deck
 func (d *CardDeck) CardToRandom(card Card) {
-
+	index := rand.IntN(len(d.Cards))
+	d.Cards = append(d.Cards, Card{})
+	copy(d.Cards[index+1:], d.Cards[index:])
+	d.Cards[index] = card
 }
 
 // CardsLeft returns the number of cards left in the deck
