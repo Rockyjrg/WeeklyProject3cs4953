@@ -1,5 +1,9 @@
 package deckofcards
 
+import (
+	"math/rand/v2"
+)
+
 // globals for suits and values
 // go lets us declare these even if we don't use them jokerface.png
 var suits []string = []string{"Clubs", "Diamonds", "Hearts", "Spades"}
@@ -22,7 +26,10 @@ func NewDeck() *CardDeck {
 	for i := 0; i < len(suits); i++ {
 
 		for j := 0; j < len(values); j++ {
-			card := Card{Suit: suits[i], Value: values[j]}
+			card := Card{
+				Suit:  suits[i],
+				Value: values[j],
+			}
 
 			cards = append(cards, card)
 		}
@@ -33,28 +40,42 @@ func NewDeck() *CardDeck {
 
 // Shuffle randomizes the order of the cards in the deck
 func (d *CardDeck) Shuffle() {
-
+	for i := len(d.Cards) - 1; i > 0; i-- {
+		randomize := rand.IntN(i + 1)
+		d.Cards[i], d.Cards[randomize] = d.Cards[randomize], d.Cards[i]
+	}
 }
 
 // Contains checks if the deck contains a specific card
 func (d *CardDeck) Contains(card Card) bool {
-
+	for _, currentCard := range d.Cards {
+		if card == currentCard {
+			return true
+		}
+	}
 	return false
 }
 
 // DrawTop removes and returns the top card from the deck
 func (d *CardDeck) DrawTop() Card {
-	return Card{}
+	firstCard := d.Cards[0]
+	d.Cards = d.Cards[1:]
+	return firstCard
 }
 
 // DrawBottom removes and returns the bottom card from the deck
 func (d *CardDeck) DrawBottom() Card {
-	return Card{}
+	lastCard := d.Cards[len(d.Cards)-1]
+	d.Cards = d.Cards[:len(d.Cards)-1]
+	return lastCard
 }
 
 // DrawRandom removes and returns a card from a random position in the deck
 func (d *CardDeck) DrawRandom() Card {
-	return Card{}
+	index := rand.IntN(len(d.Cards))
+	randomCard := d.Cards[index]
+	d.Cards = append(d.Cards[:index], d.Cards[index+1:]...)
+	return randomCard
 }
 
 // CardToTop places a card on top of the deck
